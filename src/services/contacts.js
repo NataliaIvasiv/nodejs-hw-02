@@ -16,9 +16,13 @@ export const createContact = async (payload) => {
 };
 
 export const updateContact = async (contactId, payload, options = {}) => {
-  const rawResult = await ContactsCollection.findOneAndUpdate(
+  
+  console.log("Contact ID:", contactId);
+  console.log("Payload:", payload);
+  console.log("Options:", options);
+ try {const rawResult = await ContactsCollection.findOneAndUpdate(
     { _id: contactId },
-    payload,
+     payload,
     {
       new: true,
       includeResultMetadata: true,
@@ -26,12 +30,21 @@ export const updateContact = async (contactId, payload, options = {}) => {
     },
   );
 
-  if (!rawResult || !rawResult.value) return null;
+  console.log("Raw result from DB:", rawResult);
+
+  if (!rawResult || !rawResult.value) {
+    console.log("No result or value from update");
+    return null;
+  };
 
   return {
     contact: rawResult.value,
     isNew: Boolean(rawResult?.lastErrorObject?.upserted),
-  };
+   };
+ } catch(error) {
+    console.error("Error during updateContact:", error);
+    throw error;
+  }
 };
 
 export const deleteContact = async (contactId) => {
