@@ -5,11 +5,23 @@ import { SORT_ORDER } from '../constans/index.js';
 export const getAllContacts = async ({ page,
   perPage,
 sortOrder = SORT_ORDER.ASC,
-  sortBy = '_id'}) => {
+  sortBy = '_id',
+filter = {},}) => {
   const limit = perPage;
   const skip = (page - 1) * perPage;
 
   const contactsQuery = ContactsCollection.find();
+
+  if (filter.contactType) {
+    contactsQuery.where('contactType').equals(filter.contactType);
+  }
+
+  if (filter.isFavourite) {
+    contactsQuery.where('isFavourite').equals(filter.isFavourite);
+  }
+
+
+
   const contactsCount = await ContactsCollection.find()
     .merge(contactsQuery)
     .countDocuments();
@@ -42,9 +54,6 @@ export const createContact = async (payload) => {
 
 export const updateContact = async (contactId, payload, options = {}) => {
 
-  console.log("Contact ID:", contactId);
-  console.log("Payload:", payload);
-  console.log("Options:", options);
  try {const rawResult = await ContactsCollection.findOneAndUpdate(
     { _id: contactId },
      payload,
@@ -55,10 +64,10 @@ export const updateContact = async (contactId, payload, options = {}) => {
     },
   );
 
-  console.log("Raw result from DB:", rawResult);
+
 
   if (!rawResult || !rawResult.value) {
-    console.log("No result or value from update");
+
     return null;
   };
 
