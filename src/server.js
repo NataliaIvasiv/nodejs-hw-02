@@ -7,7 +7,7 @@ import { notFoundHandler } from './middlewares/notFoundHandler.js';
 import { errorHandler } from './middlewares/errorHandler.js';
 import cookieParser from 'cookie-parser';
 
-/* Інший код файлу */
+
 
 
 
@@ -18,6 +18,7 @@ export const setupServer = () => {
 
 
     const app = express();
+app.use(cookieParser());
 
     app.use(express.json({
 	type: ['application/json', 'application/vnd.api+json'],
@@ -34,12 +35,11 @@ export const setupServer = () => {
   app.use(router);
 
     app.use('*', notFoundHandler);
-
     app.use(errorHandler);
 
-  app.use(cookieParser());
 
-  
+
+
     app.listen(PORT, () => {
         console.log(`Server is running on port ${PORT}`);
     });

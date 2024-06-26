@@ -36,6 +36,8 @@ export const loginUserController = async (req, res) => {
 };
 
 export const logoutUserController = async (req, res) => {
+  console.log('Cookies received for logout:', req.cookies);
+
   if (req.cookies.sessionId) {
     await logoutUser(req.cookies.sessionId);
   }
