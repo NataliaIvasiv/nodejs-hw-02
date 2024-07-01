@@ -26,3 +26,5 @@ export const CLOUDINARY = {
   API_KEY: 'API_KEY',
   API_SECRET: 'API_SECRET',
 };
+
+export const ENABLE_CLOUDINARY = 'ENABLE_CLOUDINARY';
