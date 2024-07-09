@@ -7,7 +7,7 @@ security:
   - bearerAuth: []
 parameters:
   - in: path
-    name: id
+    name: contactID
     required: true
     schema:
       type: string
